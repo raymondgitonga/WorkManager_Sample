@@ -5,8 +5,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import androidx.work.*
 import com.tosh.workmanager_sample.workers.FirstWorker
 import com.tosh.workmanager_sample.workers.SecondWorker
 
@@ -20,10 +19,17 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
+
+            val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+
             val workManager = WorkManager.getInstance(applicationContext)
+
+            val data = Data.Builder()
+            data.putString("KEY_WORK", "DOING FIRST WORK")
+
             var firstWorkRequest = OneTimeWorkRequest.Builder(FirstWorker::class.java).build()
             var secondWorkRequest = OneTimeWorkRequest.Builder(SecondWorker::class.java)
-                .addTag("SECOND_TAG").build()
+                .addTag("SECOND_TAG").setConstraints(constraints).build()
 
 //            workManager.enqueue(firstWorkRequest)
 

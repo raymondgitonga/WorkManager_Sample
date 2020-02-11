@@ -14,7 +14,8 @@ class FirstWorker(ctx: Context, params: WorkerParameters): Worker(ctx, params) {
         FirstWorker::class.java.simpleName
     }
     override fun doWork(): Result {
-        makeNotification("Doing first work", applicationContext)
+        val data = inputData.getString("KEY_WORK")?:""
+        makeNotification(data, applicationContext)
 
         return try {
             //Actual work
